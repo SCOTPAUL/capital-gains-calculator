@@ -11,6 +11,7 @@ from pathlib import Path
 from cgt_calc.const import DEFAULT_INITIAL_PRICES_FILE
 from cgt_calc.exceptions import UnexpectedColumnCountError
 from cgt_calc.model import BrokerTransaction
+from cgt_calc.parsers.computershare import read_computershare_transactions
 from cgt_calc.resources import RESOURCES_PACKAGE
 
 from .mssb import read_mssb_transactions
@@ -51,6 +52,7 @@ def read_broker_transactions(
     mssb_transactions_folder: str | None,
     sharesight_transactions_folder: str | None,
     raw_transactions_file: str | None,
+    computershare_transactions_file: str | None,
 ) -> list[BrokerTransaction]:
     """Read transactions for all brokers."""
     transactions = []
@@ -87,6 +89,11 @@ def read_broker_transactions(
         transactions += read_raw_transactions(raw_transactions_file)
     else:
         print("INFO: No raw file provided")
+
+    if computershare_transactions_file is not None:
+        transactions += read_computershare_transactions(computershare_transactions_file)
+    else:
+        print("INFO: No Computershare file provided")
 
     transactions.sort(key=lambda k: k.date)
     return transactions
