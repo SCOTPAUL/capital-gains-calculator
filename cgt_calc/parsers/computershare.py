@@ -27,7 +27,14 @@ def action_from_str(label: str) -> ActionType:
 
 
 class ComputershareTransaction(BrokerTransaction):
-    """Represents a single computershare transaction."""
+    """
+    Represents a single computershare transaction.
+
+    Example format:
+    Transaction Date,Effective Date,Description,FMV,Amount,Share Price,Transaction Shares
+    01/07/24,01/07/24,PAYROLL DEDUCTION,204.875,253.14,194.6312,1.3006
+    30/04/24,30/04/24,DIVIDEND REINVESTMENT,193.315,43.66,193.315,0.2258
+    """
 
     def __init__(
         self,
