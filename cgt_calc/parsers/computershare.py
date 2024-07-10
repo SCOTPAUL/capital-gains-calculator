@@ -65,7 +65,7 @@ class ComputershareTransaction(BrokerTransaction):
 
         if action == ActionType.SELL:
             if quantity is not None:
-                quantity *= -quantity
+                quantity = -quantity
             if quantity is not None and price is not None and amount is not None:
                 fees = Decimal((quantity * price) - amount)
 
