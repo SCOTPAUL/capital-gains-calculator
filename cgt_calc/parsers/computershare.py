@@ -20,7 +20,7 @@ def action_from_str(label: str) -> ActionType:
         return ActionType.BUY
     if label == "DIVIDEND REINVESTMENT":
         return ActionType.REINVEST_DIVIDENDS
-    if label == "SALE":
+    if "SALE" in label:
         return ActionType.SELL
 
     raise ParsingError("computershare transactions", f"Unknown action: {label}")
@@ -62,6 +62,12 @@ class ComputershareTransaction(BrokerTransaction):
             amount = -Decimal(row[4])
         else:
             amount = Decimal(row[4])
+
+        if action == ActionType.SELL:
+            if quantity is not None:
+                quantity *= -quantity
+            if quantity is not None and price is not None and amount is not None:
+                fees = Decimal((quantity * price) - amount)
 
         currency = "USD"
         broker = "Computershare"
